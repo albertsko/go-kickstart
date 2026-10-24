@@ -13,22 +13,20 @@ import (
 // version is set by goreleaser through -ldflags.
 var version = "dev"
 
-// errUsage marks errors that the flag package has already printed.
+// errUsage marks usage errors that run has already reported.
 var errUsage = errors.New("usage")
+
+// 2 matches the exit status of the flag package for usage errors.
+const (
+	exitFailure = 1
+	exitUsage   = 2
+)
 
 func main() {
 	err := run(os.Args[1:], os.Stdout, os.Stderr)
-	if errors.Is(err, errUsage) {
-		os.Exit(2)
-	}
-
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
+	os.Exit(exitCode(err, os.Stderr))
 }
 
-// run holds the program logic, so tests can call it.
 func run(args []string, stdout, stderr io.Writer) error {
 	fs := flag.NewFlagSet("go-kickstart", flag.ContinueOnError)
 	fs.SetOutput(stderr)
@@ -43,6 +41,13 @@ func run(args []string, stdout, stderr io.Writer) error {
 		return fmt.Errorf("%w: %w", errUsage, err)
 	}
 
+	if fs.NArg() > 0 {
+		fmt.Fprintf(stderr, "unexpected argument: %s\n", fs.Arg(0))
+		fs.Usage()
+
+		return errUsage
+	}
+
 	if *showVersion {
 		_, err = fmt.Fprintln(stdout, buildVersion())
 
@@ -54,15 +59,35 @@ func run(args []string, stdout, stderr io.Writer) error {
 	return err
 }
 
-// buildVersion falls back to the module version that go install records.
-func buildVersion() string {
-	if version != "dev" {
-		return version
+// exitCode also prints err, unless run has already reported it.
+func exitCode(err error, stderr io.Writer) int {
+	if err == nil {
+		return 0
 	}
 
-	info, ok := debug.ReadBuildInfo()
-	if !ok || info.Main.Version == "" || info.Main.Version == "(devel)" {
-		return version
+	if errors.Is(err, errUsage) {
+		return exitUsage
+	}
+
+	fmt.Fprintf(stderr, "go-kickstart: %v\n", err)
+
+	return exitFailure
+}
+
+func buildVersion() string {
+	info, _ := debug.ReadBuildInfo()
+
+	return resolveVersion(version, info)
+}
+
+// resolveVersion falls back to the module version that go install records.
+func resolveVersion(linked string, info *debug.BuildInfo) string {
+	if linked != "dev" || info == nil {
+		return linked
+	}
+
+	if info.Main.Version == "" || info.Main.Version == "(devel)" {
+		return linked
 	}
 
 	return info.Main.Version

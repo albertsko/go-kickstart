@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    tags: ["v*"]
+    tags: ["v[0-9]*"]
 permissions:
   contents: read
 concurrency:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
-      contents: write # Publish the release and its archives.
+      contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

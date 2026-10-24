@@ -1,17 +1,10 @@
-# Project
 bin/
 dist/
 vendor/
-
-# Go
 *.test
 *.out
 coverage.*
-
-# macOS
 .DS_Store
-
-# Editors
 .idea/
 .vscode/
 *.swp

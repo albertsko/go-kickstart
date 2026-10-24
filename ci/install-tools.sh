@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+readonly BREW="/home/linuxbrew/.linuxbrew/bin/brew"
+
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval alone would hide a missing brew.
+brew_env="$("$BREW" shellenv)"
+eval "$brew_env"
 printf '%s\n' "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" >>"$GITHUB_PATH"
 
-# brew autoremove drops dependencies left over from an older cache.
+# Cleanup prunes the restored cache to the Brewfile, so it runs only in CI.
 ./run brew
-brew autoremove
+brew bundle cleanup --force --file ci/Brewfile
 
 # The key names the installed versions, so CI saves a new cache only when a tool changed.
 versions="$( (brew list --formula --versions && brew list --cask --versions) | git hash-object --stdin)"

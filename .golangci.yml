@@ -1,5 +1,5 @@
 version: "2"
-# Strict set based on evrone/go-clean-template, minus linters that flag idiomatic Go.
+# Strict set based on evrone/go-clean-template.
 linters:
   default: none
   enable:
@@ -78,10 +78,6 @@ linters:
       threshold: 100
     errcheck:
       check-type-assertions: true
-    errorlint:
-      errorf: true
-    exhaustive:
-      default-signifies-exhaustive: true
     funlen:
       lines: 65
       statements: 40
@@ -98,27 +94,31 @@ linters:
         - performance
         - style
       disabled-checks:
+        - commentedOutCode
+        - emptyStringTest
         - hugeParam
         - unnamedResult
+    gosec:
+      excludes:
+        - G703
     govet:
       enable-all: true
       disable:
         - fieldalignment
+        - shadow
     misspell:
       locale: US
-    mnd:
-      ignored-functions:
-        - '^os\.(Exit|WriteFile|OpenFile|Mkdir|MkdirAll|Chmod)$'
-        - '^time\.'
-        - '\.Duration$'
     nestif:
       min-complexity: 4
     nolintlint:
       require-explanation: true
       require-specific: true
-      allow-unused: false
     revive:
       confidence: 0
+      enable-default-rules: true
+      rules:
+        - name: unused-parameter
+          disabled: true
   exclusions:
     generated: lax
     presets:
@@ -130,12 +130,9 @@ linters:
         linters:
           - dupl
           - funlen
+          - goconst
           - gochecknoglobals
           - gocognit
-    paths:
-      - bin/
-      - dist/
-      - vendor/
 formatters:
   enable:
     - gofumpt
@@ -147,9 +144,3 @@ formatters:
     goimports:
       local-prefixes:
         - github.com/albertsko/go-kickstart
-  exclusions:
-    generated: lax
-    paths:
-      - bin/
-      - dist/
-      - vendor/

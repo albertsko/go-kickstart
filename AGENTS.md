@@ -13,6 +13,8 @@ Go command-line program in `cmd/go-kickstart/`. The tooling is ready to use: eve
 | `./run ci`              | Run everything CI runs. A change is done when this passes.                           |
 | `./run release-check`   | Validate `.goreleaser.yaml`.                                                         |
 | `./run clean`           | Remove `bin/`, `dist/`, and the Go test cache.                                       |
+| `./run brew`            | Install or upgrade the tools in `ci/Brewfile`.                                       |
+| `./run deps`            | Check that the tools in `ci/Brewfile` are installed.                                 |
 
 ### Commits
 
@@ -34,7 +36,7 @@ Go command-line program in `cmd/go-kickstart/`. The tooling is ready to use: eve
 
 - Put CI logic in `ci/*.sh` or `./run` tasks. Give each workflow `run:` step one command.
 - Pin GitHub Actions to a full commit SHA, with the version in a comment. Dependabot updates the pins.
-- Add tools to `ci/Brewfile`, so local runs and CI use the same versions.
+- Add tools to `ci/Brewfile`, so local runs and CI use the same tools.
 
 ### Releases
 

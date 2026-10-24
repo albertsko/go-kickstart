@@ -1,5 +1,6 @@
 version: 2
-# No project_name, so goreleaser names the project after the GitHub remote.
+# Without it, goreleaser would name a /v2 module v2.
+project_name: go-kickstart
 builds:
   - main: ./cmd/go-kickstart
     env:
@@ -18,7 +19,7 @@ checksum:
   name_template: checksums.txt
 changelog:
   use: github
-  format: "{{ .Message }}{{ with .AuthorUsername }} (@{{ . }}){{ end }}"
+  format: "{{ .Message }}{{ if .Logins }} ({{ .Logins | englishJoin }}){{ end }}"
   filters:
     exclude:
       - "^Merge "
@@ -35,5 +36,11 @@ changelog:
     - title: Other changes
       order: 999
 release:
+  prerelease: auto
+  # TagContents would include the signature of a signed tag.
   header: |
-    {{ .TagContents }}
+    {{ .TagSubject }}
+    {{- with .TagBody }}
+
+    {{ . }}
+    {{- end }}

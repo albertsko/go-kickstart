@@ -15,16 +15,16 @@ A GitHub template for a Go command-line program, with strict linting, a task run
 ### Start a project
 
 1. Click **Use this template** on GitHub and clone your new repository.
-2. Rename the module, program, and `cmd/` directory:
-
-   ```sh
-   ./run init github.com/you/app
-   ```
-
-3. Install the tools with [Homebrew](https://brew.sh) and run the checks:
+2. Install the tools, including Go, with [Homebrew](https://brew.sh):
 
    ```sh
    ./run brew
+   ```
+
+3. Rename the module, program, and `cmd/` directory, then run the checks:
+
+   ```sh
+   ./run init github.com/you/app
    ./run ci
    ```
 

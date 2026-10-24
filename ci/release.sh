@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+readonly BREW="/home/linuxbrew/.linuxbrew/bin/brew"
+
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 
 # A lightweight tag would put the commit message in the release summary.
@@ -10,7 +12,9 @@ if [[ "$(git cat-file -t "$GITHUB_REF_NAME")" != tag ]]; then
 fi
 
 # Install fresh, so a poisoned check cache cannot change the release tools.
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval alone would hide a missing brew.
+brew_env="$("$BREW" shellenv)"
+eval "$brew_env"
 brew install go goreleaser
 
 goreleaser release --clean
