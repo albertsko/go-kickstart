@@ -1,0 +1,41 @@
+version: 2
+# No project_name, so goreleaser names the project after the GitHub remote.
+builds:
+  - main: ./cmd/go-kickstart
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+checksum:
+  name_template: checksums.txt
+changelog:
+  use: github
+  format: "{{ .Message }}{{ with .AuthorUsername }} (@{{ . }}){{ end }}"
+  filters:
+    exclude:
+      - '^(build|chore|ci|docs|refactor|style|test)(\(.+\))?:'
+      - "^Revert "
+      - "^Merge "
+  groups:
+    - title: Breaking changes
+      regexp: '^\w+(\([^)]*\))?!:'
+      order: -1
+    - title: Features
+      regexp: '^feat(\([^)]*\))?:'
+      order: 0
+    - title: Fixes
+      regexp: '^fix(\([^)]*\))?:'
+      order: 1
+    - title: Other changes
+      order: 999
+release:
+  header: |
+    {{ .TagContents }}
