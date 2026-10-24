@@ -1,34 +1,33 @@
-Less setup, more Go! 🚀
+<div align="center">
 
-A GitHub template for a Go command-line program, with strict linting, a task runner, CI, and releases ready to use.
+### Less setup, more Go! 🚀
+
+[![Check](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml/badge.svg)](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml)
+[![Go 1.27](https://img.shields.io/badge/go-1.27-00ADD8?logo=go)](go.mod)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
+
+Opinionated GitHub template for a Go project.
+
+</div>
 
 ### What you get
 
-- `cmd/go-kickstart/`: a small CLI with a `-version` flag and a test.
-- `./run`: a task runner script instead of a Makefile. `./run help` lists the tasks.
-- `ci/`: the `Brewfile` with every tool, including Go, and the scripts the workflows call.
-- `.golangci.yml`: a strict golangci-lint setup with gofumpt and goimports.
-- `.github/workflows/`: checks on every pull request and push to `main`, and releases from annotated tags.
-- `.goreleaser.yaml`: binaries for linux, darwin, and windows, checksums, and release notes grouped by [Conventional Commits](https://www.conventionalcommits.org/).
-- `AGENTS.md`: repository conventions for people and coding agents.
+- 🧹 **70 linters**, strict from day one.
+- 🧪 **Race-checked tests** in shuffled order.
+- 🏃 **One task runner**, `./run`, for you and CI.
+- 🍺 **One Brewfile** for every tool, Go included.
+- 📦 **Releases from one tag** for Linux, macOS, and Windows.
+- 🤖 **Ready for coding agents** with `AGENTS.md`.
 
-### Start a project
+### Quickstart
 
-1. Click **Use this template** on GitHub and clone your new repository.
-2. Install the tools, including Go, with [Homebrew](https://brew.sh):
+[Use this template](https://github.com/albertsko/go-kickstart/generate), clone it, and run:
 
-   ```sh
-   ./run brew
-   ```
-
-3. Rename the module, program, and `cmd/` directory, then run the checks:
-
-   ```sh
-   ./run init github.com/you/app
-   ./run ci
-   ```
-
-4. Review the changes with `git diff` and commit them.
+```sh
+./run brew                       # install the tools with Homebrew
+./run init github.com/you/app    # rename the project
+./run ci                         # run every check
+```
 
 ### Release
 
@@ -36,3 +35,5 @@ A GitHub template for a Go command-line program, with strict linting, a task run
 git tag -a v0.1.0 -m "First release."
 git push origin v0.1.0
 ```
+
+The tag message opens the release notes, and commits are grouped by [Conventional Commits](https://www.conventionalcommits.org/).
