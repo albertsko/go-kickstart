@@ -6,20 +6,9 @@
 [![Go 1.27](https://img.shields.io/badge/go-1.27-00ADD8?logo=go)](go.mod)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
-Opinionated GitHub template for a Go project.
-
 </div>
 
-### What you get
-
-- 🧹 **70 linters**, strict from day one.
-- 🧪 **Race-checked tests** in shuffled order.
-- 🏃 **One task runner**, `./run`, for you and CI.
-- 🍺 **One Brewfile** for every tool, Go included.
-- 📦 **Releases from one tag** for Linux, macOS, and Windows.
-- 🤖 **Ready for coding agents** with `AGENTS.md`.
-
-### Quickstart
+### Kickstart
 
 [Use this template](https://github.com/albertsko/go-kickstart/generate), clone it, and run:
 
@@ -28,6 +17,13 @@ Opinionated GitHub template for a Go project.
 ./run init github.com/you/app    # rename the project
 ./run ci                         # run every check
 ```
+
+### Contents
+
+- 🧹 **Linters**, strict from day one.
+- 🏃 **Task runner**, `./run`, for you and CI.
+- 🍺 **Brewfile** for every tool, Go included.
+- 📦 **Releases** for Linux, macOS, and Windows.
 
 ### Release
 
