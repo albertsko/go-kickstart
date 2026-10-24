@@ -21,8 +21,6 @@ changelog:
   format: "{{ .Message }}{{ with .AuthorUsername }} (@{{ . }}){{ end }}"
   filters:
     exclude:
-      - '^(build|chore|ci|docs|refactor|style|test)(\(.+\))?:'
-      - "^Revert "
       - "^Merge "
   groups:
     - title: Breaking changes

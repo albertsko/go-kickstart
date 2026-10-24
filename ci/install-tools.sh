@@ -9,3 +9,7 @@ printf '%s\n' "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" >>"$GITHUB_PATH"
 # brew autoremove drops dependencies left over from an older cache.
 ./run brew
 brew autoremove
+
+# The key names the installed versions, so CI saves a new cache only when a tool changed.
+versions="$( (brew list --formula --versions && brew list --cask --versions) | git hash-object --stdin)"
+printf 'key=brew-v2-%s-%s-%s\n' "$RUNNER_OS" "$RUNNER_ARCH" "$versions" >>"$GITHUB_OUTPUT"

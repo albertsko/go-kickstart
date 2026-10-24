@@ -34,6 +34,7 @@ _require_brew() {
 task_init() {
 	local new_module="${1:-}"
 	local old_module
+	local parts=()
 
 	[[ -n "$new_module" ]] || die "usage: ./run init <module path>, for example github.com/you/app"
 	old_module="$(go list -m)"
@@ -47,6 +48,12 @@ task_init() {
 			xargs -0 perl -pi -e 's/(\Q$ENV{OLD_MODULE}\E)|\Q$ENV{OLD_NAME}\E/$1 ? $ENV{NEW_MODULE} : $ENV{NEW_NAME}/ge'
 
 	git mv -- "cmd/${old_module##*/}" "cmd/${new_module##*/}"
+
+	# The copyright holder is the owner in host/owner/name, so shorter paths keep the license as it is.
+	IFS=/ read -r -a parts <<<"$new_module"
+	if ((${#parts[@]} >= 3)); then
+		OWNER="${parts[1]}" YEAR="$(date +%Y)" perl -pi -e 's/^Copyright \(c\) .*$/Copyright (c) $ENV{YEAR} $ENV{OWNER}/' LICENSE.md
+	fi
 
 	printf 'Renamed %s to %s. Review with: git diff\n' "$old_module" "$new_module" >&2
 }

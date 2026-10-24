@@ -18,8 +18,6 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - id: cache-key
-        run: ci/brew-cache-key.sh
       # The exclusion keeps the runner's own Homebrew out of the cache.
       - id: brew-cache
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -27,15 +25,16 @@ jobs:
           path: |
             /home/linuxbrew/.linuxbrew/*
             !/home/linuxbrew/.linuxbrew/Homebrew
-          key: ${{ steps.cache-key.outputs.key }}
-          restore-keys: ${{ steps.cache-key.outputs.restore-prefix }}
-      - run: ci/install-tools.sh
+          key: brew-v2-${{ runner.os }}-${{ runner.arch }}-
+          restore-keys: brew-v2-${{ runner.os }}-${{ runner.arch }}-
+      - id: install
+        run: ci/install-tools.sh
       # Only main saves the cache, so pull requests cannot poison it.
-      - if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.brew-cache.outputs.cache-hit != 'true'
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.install.outputs.key != steps.brew-cache.outputs.cache-matched-key
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             /home/linuxbrew/.linuxbrew/*
             !/home/linuxbrew/.linuxbrew/Homebrew
-          key: ${{ steps.cache-key.outputs.key }}
+          key: ${{ steps.install.outputs.key }}
       - run: ./run ci
