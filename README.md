@@ -14,7 +14,7 @@
 ```
 brew install mise                  # or: curl https://mise.run | sh
 mise trust                         # allow the tasks in mise.toml
-mise install                       # install mise tools
+mise install                       # or: mise run brew
 mise run init github.com/you/app   # rename the project
 mise run ci                        # run every check
 ```
