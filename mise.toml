@@ -1,0 +1,59 @@
+[settings]
+auto_install = false
+
+[tools]
+go = "latest"
+golangci-lint = "latest"
+goreleaser = "latest"
+jactionlint = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+"github:oxc-project/oxc" = { version = "latest", version_prefix = "oxfmt_v", bin = "oxfmt" }
+
+[tasks.fmt]
+description = "Format Go, shell, and markdown"
+file = "tasks/fmt.sh"
+
+[tasks.lint]
+description = "Lint Go, shell, and workflows"
+file = "tasks/lint.sh"
+
+[tasks.test]
+description = "Run Go tests"
+run = "go test -race -shuffle=on ./..."
+
+[tasks.build]
+description = "Build bin/go-kickstart"
+file = "tasks/build.sh"
+
+[tasks.release-check]
+description = "Validate .goreleaser.yaml"
+run = "goreleaser check"
+
+[tasks.ci]
+description = "Run all checks"
+run = [
+    { task = "fmt", args = [
+        "--check",
+    ] },
+    { task = "lint" },
+    { task = "test" },
+    { task = "build" },
+    { task = "release-check" },
+]
+
+[tasks.clean]
+description = "Remove build output and the test cache"
+run = ["rm -rf bin dist", "go clean -testcache"]
+
+[tasks.init]
+description = "Rename the template module once"
+file = "tasks/init.sh"
+
+[tasks.brew]
+description = "Install the tools with Homebrew"
+file = "tasks/brew.sh"
+
+[tasks.deps]
+description = "Check that the tools are installed"
+file = "tasks/deps.sh"

@@ -1,10 +1,17 @@
 bin/
 dist/
 vendor/
+
 *.test
 *.out
 coverage.*
+
 .DS_Store
+
 .idea/
 .vscode/
+
 *.swp
+
+mise.local.toml
+mise.*.local.toml
