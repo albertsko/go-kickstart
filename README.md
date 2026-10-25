@@ -1,5 +1,5 @@
 <div align="center">
-### Less setup, more Go! 🚀
+    <b>Less setup, more Go! 🚀</b>
 
 [![Check](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml/badge.svg)](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml)
 [![Go 1.27](https://img.shields.io/badge/go-1.27-00ADD8?logo=go)](go.mod)
