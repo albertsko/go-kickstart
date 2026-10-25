@@ -1,6 +1,6 @@
 <div align="center">
     <h3>Kickstart your next Go project! 🚀</h3>
-    <p>A Go project template with linting, tests, CI, and cross-platform releases built in.</p>
+    <p><sub>A Go project template with linting, tests, CI, and cross-platform releases built in.</sub></p>
 
 [![Check](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml/badge.svg)](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml)
 [![Go 1.27](https://img.shields.io/badge/go-1.27-00ADD8?logo=go)](go.mod)
