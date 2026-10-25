@@ -1,5 +1,4 @@
 version: 2
-# Without it, goreleaser would name a /v2 module v2.
 project_name: go-kickstart
 builds:
   - main: ./cmd/go-kickstart
@@ -37,7 +36,6 @@ changelog:
       order: 999
 release:
   prerelease: auto
-  # TagContents would include the signature of a signed tag.
   header: |
     {{ .TagSubject }}
     {{- with .TagBody }}

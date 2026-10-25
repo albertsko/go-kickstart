@@ -1,5 +1,4 @@
 version: "2"
-# Strict set based on evrone/go-clean-template.
 linters:
   default: none
   enable:

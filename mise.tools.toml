@@ -1,8 +1,0 @@
-[tools]
-go = "latest"
-golangci-lint = "latest"
-goreleaser = "latest"
-jactionlint = "latest"
-shellcheck = "latest"
-shfmt = "latest"
-"github:oxc-project/oxc" = { version = "latest", version_prefix = "oxfmt_v", bin = "oxfmt" }

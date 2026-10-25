@@ -1,8 +1,8 @@
-<!-- Title: a Conventional Commit, for example "feat: add a --json flag". -->
+### What
 
-### What and why
+### Why
 
 ### Checklist
 
-- [ ] The title is a Conventional Commit. Use `!` for breaking changes, for example `feat!: ...`.
+- [ ] Title is a Conventional Commit (`!` if breaking).
 - [ ] `mise run ci` passes.

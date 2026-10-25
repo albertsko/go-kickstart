@@ -1,50 +1,59 @@
+[settings]
+auto_install = false
+
+[tools]
+go = "latest"
+golangci-lint = "latest"
+goreleaser = "latest"
+jactionlint = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+"github:oxc-project/oxc" = { version = "latest", version_prefix = "oxfmt_v", bin = "oxfmt" }
+
 [tasks.fmt]
 description = "Format Go, shell, and markdown"
-file = "ci/fmt.sh"
+file = "tasks/fmt.sh"
 
 [tasks.lint]
-description = "Run golangci-lint, go mod tidy -diff, go fix -diff, shellcheck, and jactionlint"
-file = "ci/lint.sh"
+description = "Lint Go, shell, and workflows"
+file = "tasks/lint.sh"
 
 [tasks.test]
-description = "Run Go tests with the race detector, in shuffled order"
+description = "Run Go tests"
 run = "go test -race -shuffle=on ./..."
 
 [tasks.build]
-description = "Build bin/<name>"
-file = "ci/build.sh"
+description = "Build bin/go-kickstart"
+file = "tasks/build.sh"
 
 [tasks.release-check]
 description = "Validate .goreleaser.yaml"
 run = "goreleaser check"
 
-# Run steps keep the order and stop at the first failure. depends would run in parallel.
 [tasks.ci]
-description = "Run everything CI runs"
+description = "Run all checks"
 run = [
-  { task = "fmt", args = ["--check"] },
-  { task = "lint" },
-  { task = "test" },
-  { task = "build" },
-  { task = "release-check" },
+    { task = "fmt", args = [
+        "--check",
+    ] },
+    { task = "lint" },
+    { task = "test" },
+    { task = "build" },
+    { task = "release-check" },
 ]
 
 [tasks.clean]
-description = "Remove bin/, dist/, and the Go test cache"
+description = "Remove build output and the test cache"
 run = ["rm -rf bin dist", "go clean -testcache"]
 
 [tasks.init]
 description = "Rename the template module once"
-file = "ci/init.sh"
-
-[tasks.setup]
-description = "Install the tools with Homebrew, or with mise when Homebrew is missing"
-file = "ci/setup.sh"
+file = "tasks/init.sh"
 
 [tasks.brew]
-description = "Install or upgrade the tools in ci/Brewfile"
-run = "brew bundle --file ci/Brewfile"
+description = "Install the tools with Homebrew"
+file = "tasks/brew.sh"
 
 [tasks.deps]
-description = "Check that the tools from Homebrew or mise are installed"
-file = "ci/deps.sh"
+description = "Check that the tools are installed"
+file = "tasks/deps.sh"

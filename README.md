@@ -10,22 +10,23 @@
 
 [Use this template](https://github.com/albertsko/go-kickstart/generate), clone it, and run:
 
-```sh
-brew install mise                    # or: curl https://mise.run | sh
+```
+curl https://mise.run | sh           # or: brew install mise
 mise trust                           # allow the tasks in mise.toml
-mise run setup                       # install the tools
+mise install                         # or: mise run brew
 mise run init github.com/you/app     # rename the project
 mise run ci                          # run every check
 ```
 
-`mise run setup` uses Homebrew when you have it. Without Homebrew, it installs the tools with mise and records that choice in `.miserc.local.toml`. To use mise tools with Homebrew installed, put `env = ["tools"]` in `.miserc.local.toml` before `mise run setup`.
-
 ### Contents
 
 - 🧹 **Linters**, strict from day one.
-- 🏃 **Task runner**, `mise run`, for you and CI.
-- 🍺 **Brewfile** for every tool, Go included, or `mise` if you prefer.
+- ✨ **Formatters** for Go, shell, and Markdown.
+- 🏃 **Tasks** with `mise run`.
+- 🧑‍🍳 **Tools** from `mise` or `brew`.
+- ✅ **CI** on GitHub Actions, with a cached Homebrew.
 - 📦 **Releases** for Linux, macOS, and Windows.
+- 🤖 **Dependabot** for Go modules and GitHub Actions.
 
 ### Release
 
