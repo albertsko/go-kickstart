@@ -14,6 +14,9 @@ jobs:
     name: check
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # CI uses the tools from ci/Brewfile, so mise must never install its own.
+    env:
+      MISE_TASK_RUN_AUTO_INSTALL: "0"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -37,4 +40,4 @@ jobs:
             /home/linuxbrew/.linuxbrew/*
             !/home/linuxbrew/.linuxbrew/Homebrew
           key: ${{ steps.install.outputs.key }}
-      - run: ./run ci
+      - run: mise run ci

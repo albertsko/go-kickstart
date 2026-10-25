@@ -5,4 +5,4 @@
 ### Checklist
 
 - [ ] The title is a Conventional Commit. Use `!` for breaking changes, for example `feat!: ...`.
-- [ ] `./run ci` passes.
+- [ ] `mise run ci` passes.

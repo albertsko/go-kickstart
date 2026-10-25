@@ -1,0 +1,50 @@
+[tasks.fmt]
+description = "Format Go, shell, and markdown"
+file = "ci/fmt.sh"
+
+[tasks.lint]
+description = "Run golangci-lint, go mod tidy -diff, go fix -diff, shellcheck, and jactionlint"
+file = "ci/lint.sh"
+
+[tasks.test]
+description = "Run Go tests with the race detector, in shuffled order"
+run = "go test -race -shuffle=on ./..."
+
+[tasks.build]
+description = "Build bin/<name>"
+file = "ci/build.sh"
+
+[tasks.release-check]
+description = "Validate .goreleaser.yaml"
+run = "goreleaser check"
+
+# Run steps keep the order and stop at the first failure. depends would run in parallel.
+[tasks.ci]
+description = "Run everything CI runs"
+run = [
+  { task = "fmt", args = ["--check"] },
+  { task = "lint" },
+  { task = "test" },
+  { task = "build" },
+  { task = "release-check" },
+]
+
+[tasks.clean]
+description = "Remove bin/, dist/, and the Go test cache"
+run = ["rm -rf bin dist", "go clean -testcache"]
+
+[tasks.init]
+description = "Rename the template module once"
+file = "ci/init.sh"
+
+[tasks.setup]
+description = "Install the tools with Homebrew, or with mise when Homebrew is missing"
+file = "ci/setup.sh"
+
+[tasks.brew]
+description = "Install or upgrade the tools in ci/Brewfile"
+run = "brew bundle --file ci/Brewfile"
+
+[tasks.deps]
+description = "Check that the tools from Homebrew or mise are installed"
+file = "ci/deps.sh"

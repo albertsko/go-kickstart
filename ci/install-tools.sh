@@ -10,8 +10,9 @@ brew_env="$("$BREW" shellenv)"
 eval "$brew_env"
 printf '%s\n' "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" >>"$GITHUB_PATH"
 
+# mise comes from the Brewfile, so this script calls brew directly.
 # Cleanup prunes the restored cache to the Brewfile, so it runs only in CI.
-./run brew
+brew bundle --file ci/Brewfile
 brew bundle cleanup --force --file ci/Brewfile
 
 # The key names the installed versions, so CI saves a new cache only when a tool changed.
