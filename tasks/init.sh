@@ -6,6 +6,7 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 source tasks/_lib.sh
 
 readonly TEMPLATE_MODULE="github.com/albertsko/go-kickstart"
+readonly MARK=$'\2'
 
 new_module="${1:-}"
 
@@ -17,11 +18,25 @@ go mod edit -module "$new_module" -print >/dev/null || die "invalid module path:
 old_name="$(_name_of "$old_module")"
 new_name="$(_name_of "$new_module")"
 
-# shellcheck disable=SC2016
-git grep -lIz -F -e "$old_module" -e "$old_name" -- . ':!tasks/init.sh' |
-	OLD_MODULE="$old_module" NEW_MODULE="$new_module" OLD_NAME="$old_name" NEW_NAME="$new_name" \
-		xargs -0 perl -pi -e 's/(\Q$ENV{OLD_MODULE}\E)|\Q$ENV{OLD_NAME}\E/$1 ? $ENV{NEW_MODULE} : $ENV{NEW_NAME}/ge'
+rename_in() {
+	local text
 
+	IFS= read -r -d '' text <"$1" || true
+	text="${text//"$old_module"/$MARK}"
+	text="${text//"$old_name"/$new_name}"
+	text="${text//"$MARK"/$new_module}"
+	printf '%s' "$text" >"$1"
+}
+
+awk '/^\[tasks\.init\]$/ { skip = 1 } skip && /^$/ { skip = 0; next } !skip' mise.toml >mise.toml.tmp
+mv -- mise.toml.tmp mise.toml
+git rm -q -- tasks/init.sh
+
+while IFS= read -r -d '' file; do
+	rename_in "$file"
+done < <(git grep -lIz -F -e "$old_module" -e "$old_name")
+
+printf '<div align="center"><h3>%s</h3></div>\n' "$new_name" >README.md
 [[ "$new_name" == "$old_name" ]] || git mv -- "cmd/$old_name" "cmd/$new_name"
 
 tasks/fmt.sh
@@ -34,4 +49,5 @@ if ((${#parts[@]} < 3)); then
 	exit 0
 fi
 
-OWNER="${parts[1]}" YEAR="$(date +%Y)" perl -pi -e 's/^Copyright \(c\) .*$/Copyright (c) $ENV{YEAR} $ENV{OWNER}/' LICENSE.md
+awk -v line="Copyright (c) $(date +%Y) ${parts[1]}" '/^Copyright \(c\) / { $0 = line } 1' LICENSE.md >LICENSE.md.tmp
+mv -- LICENSE.md.tmp LICENSE.md
