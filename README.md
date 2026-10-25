@@ -11,11 +11,11 @@
 [Use this template](https://github.com/albertsko/go-kickstart/generate), clone it, and run:
 
 ```
-curl https://mise.run | sh           # or: brew install mise
-mise trust                           # allow the tasks in mise.toml
-mise install                         # or: mise run brew
-mise run init github.com/you/app     # rename the project
-mise run ci                          # run every check
+brew install mise                  # or: curl https://mise.run | sh
+mise trust                         # allow the tasks in mise.toml
+mise install                       # install mise tools
+mise run init github.com/you/app   # rename the project
+mise run ci                        # run every check
 ```
 
 ### Contents
@@ -24,9 +24,9 @@ mise run ci                          # run every check
 - ✨ **Formatters** for Go, shell, and Markdown.
 - 🏃 **Tasks** with `mise run`.
 - 🧑‍🍳 **Tools** from `mise` or `brew`.
-- ✅ **CI** on GitHub Actions, with a cached Homebrew.
+- ✅ **CI** on GitHub Actions, with cached mise tools.
 - 📦 **Releases** for Linux, macOS, and Windows.
-- 🤖 **Dependabot** for Go modules and GitHub Actions.
+- 🤖 **Updates** for mise tools, Go modules, and GitHub Actions.
 
 ### Release
 

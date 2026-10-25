@@ -13,11 +13,12 @@
 | `mise run clean`           | Remove build output and the test cache.            |
 | `mise run brew`            | Install the tools with Homebrew.                   |
 | `mise run deps`            | Check that the tools are installed.                |
+| `mise run upgrade`         | Upgrade all mise tools, including Go.              |
 
 ### Tools
 
 - Install with `mise run brew` or `mise install`. Installed mise tools win over Homebrew.
-- Add a tool to `tasks/ci/Brewfile` and `[tools]` in `mise.toml`.
+- Add a tool to `Brewfile` and `[tools]` in `mise.toml`.
 
 ### Commits
 
@@ -28,8 +29,7 @@
 ### CI
 
 - Put task scripts in `tasks/`, linked with `file =` in `mise.toml`.
-- Put CI-only files in `tasks/ci/`.
-- CI installs every tool from `tasks/ci/Brewfile`.
+- CI installs the tools configured in `mise.toml`.
 
 ### Releases
 

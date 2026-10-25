@@ -18,21 +18,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - id: brew-cache
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
         with:
-          path: |
-            /home/linuxbrew/.linuxbrew/*
-            !/home/linuxbrew/.linuxbrew/Homebrew
-          key: brew-v2-${{ runner.os }}-${{ runner.arch }}-
-          restore-keys: brew-v2-${{ runner.os }}-${{ runner.arch }}-
-      - id: install
-        run: tasks/ci/tools.sh
-      - if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.install.outputs.key != steps.brew-cache.outputs.cache-matched-key
-        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            /home/linuxbrew/.linuxbrew/*
-            !/home/linuxbrew/.linuxbrew/Homebrew
-          key: ${{ steps.install.outputs.key }}
+          minimum_release_age: 7d
       - run: mise run ci

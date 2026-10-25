@@ -1,14 +1,15 @@
 [settings]
 auto_install = false
+minimum_release_age = "7d"
 
 [tools]
 go = "latest"
-golangci-lint = "latest"
-goreleaser = "latest"
-jactionlint = "latest"
-shellcheck = "latest"
-shfmt = "latest"
-"github:oxc-project/oxc" = { version = "latest", version_prefix = "oxfmt_v", bin = "oxfmt" }
+"github:golangci/golangci-lint" = "2.15.0"
+"github:goreleaser/goreleaser" = "2.18.3"
+"github:jdx/jactionlint" = "2.2.0"
+"github:koalaman/shellcheck" = "0.11.0"
+"github:mvdan/sh" = { version = "3.14.1", rename_exe = "shfmt" }
+"github:oxc-project/oxc" = { version = "0.73.0", version_prefix = "oxfmt_v", bin = "oxfmt" }
 
 [tasks.fmt]
 description = "Format Go, shell, and markdown"
@@ -57,3 +58,7 @@ file = "tasks/brew.sh"
 [tasks.deps]
 description = "Check that the tools are installed"
 file = "tasks/deps.sh"
+
+[tasks.upgrade]
+description = "Upgrade all mise tools"
+file = "tasks/upgrade.sh"
