@@ -1,125 +1,177 @@
+# Universal golangci-lint config. Tested on golangci-lint v2.15.0.
+# Validate edits with `golangci-lint config verify`, because `run` ignores misspelled keys.
+#
+# Policy:
+# - Strict on bugs, security, and error handling, but moderate on style.
+# - No project-specific values (module path, Go version, OS paths).
+# - Explicit linter list, so upgrades never enable new linters.
+# - Every linter in v2.15.0 is either enabled or listed under "Disabled linters".
+# - Review `--fix` output: the fatcontext fix can leave an unused variable.
+
 version: "2"
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  uniq-by-line: false
+
 linters:
   default: none
   enable:
-    - asasalint
-    - asciicheck
+    # Bugs and correctness.
     - bidichk
     - bodyclose
-    - canonicalheader
-    - containedctx
-    - contextcheck
-    - cyclop
-    - dogsled
-    - dupl
-    - dupword
     - durationcheck
-    - embeddedstructfieldcheck
     - errcheck
-    - errchkjson
-    - errname
     - errorlint
     - exhaustive
-    - exptostd
     - fatcontext
-    - funcorder
-    - funlen
     - gocheckcompilerdirectives
-    - gochecknoglobals
-    - gochecknoinits
-    - gocognit
-    - goconst
+    - gochecksumtype
     - gocritic
-    - godoclint
-    - godot
-    - godox
-    - gomoddirectives
-    - goprintffuncname
-    - gosec
     - govet
     - ineffassign
-    - iotamixing
     - makezero
-    - mirror
-    - misspell
-    - mnd
-    - modernize
-    - nakedret
-    - nestif
     - nilerr
     - nilnesserr
-    - nilnil
     - noctx
-    - nolintlint
     - nosprintfhostport
-    - perfsprint
-    - predeclared
     - reassign
     - recvcheck
-    - revive
     - rowserrcheck
     - sloglint
     - sqlclosecheck
     - staticcheck
+    - unused
+
+    # Security.
+    - gosec
+
+    # Tests.
     - thelper
-    - tparallel
+    - usetesting
+
+    # Maintainability and idioms.
+    - asciicheck
+    - canonicalheader
+    - dupword
+    - errname
+    - gocognit
+    - godoclint
+    - goprintffuncname
+    - mirror
+    - misspell
+    - modernize
+    - nakedret
+    - nilnil
+    - nolintlint
+    - revive
     - unconvert
     - unparam
-    - unused
     - usestdlibvars
-    - usetesting
-    - wastedassign
-    - whitespace
+
+  # Disabled linters:
+  #
+  # Third-party libraries only:
+  #   arangolint, clickhouselint, exptostd, ginkgolinter, promlinter, protogetter, spancheck,
+  #   testifylint, zerologlint
+  # Deprecated:
+  #   exhaustruct, gomodguard, wsl
+  # Need project-specific rules:
+  #   depguard, goheader, gomodguard_v2, importas
+  # Duplicate an enabled linter (replacement in parentheses):
+  #   cyclop, gocyclo, maintidx, nestif, funlen (gocognit), intrange (modernize),
+  #   predeclared (revive), loggercheck (govet, sloglint), wastedassign (ineffassign, staticcheck),
+  #   copyloopvar (modernize), forcetypeassert (errcheck), errchkjson (staticcheck, errcheck)
+  # Poorly maintained:
+  #   asasalint (no commits since 2023-05), tparallel (no commits since 2024-06, crash reports)
+  # Noisy, or against common Go idioms:
+  #   contextcheck, dupl, err113, exhaustruct_v5, gochecknoglobals, gochecknoinits, godox,
+  #   goconst, mnd, musttag, nlreturn, noinlineerr, nonamedreturns, paralleltest, prealloc,
+  #   testpackage, varnamelen, wrapcheck
+  # Style or policy choices that are not universal:
+  #   containedctx, decorder, dogsled, embeddedstructfieldcheck, forbidigo, funcorder, godot,
+  #   gomoddirectives, gosmopolitan, grouper, iface, inamedparam, interfacebloat, iotamixing,
+  #   ireturn, lll, perfsprint, tagalign, tagliatelle, testableexamples, unqueryvet, whitespace,
+  #   wsl_v5
+
   settings:
-    cyclop:
-      max-complexity: 10
-    dupl:
-      threshold: 100
+    dupword:
+      comments-only: true # Repeated words in strings are often data.
+
     errcheck:
-      check-type-assertions: true
-    funlen:
-      lines: 65
-      statements: 40
-    gocognit:
-      min-complexity: 15
-    goconst:
-      min-len: 2
-      min-occurrences: 5
+      check-type-assertions: true # Unchecked type assertions panic.
+
+    exhaustive:
+      default-signifies-exhaustive: true
+
     gocritic:
       enabled-tags:
         - diagnostic
-        - experimental
-        - opinionated
-        - performance
-        - style
       disabled-checks:
         - commentedOutCode
-        - emptyStringTest
-        - hugeParam
-        - unnamedResult
+
     gosec:
       excludes:
-        - G703
+        - G104 # Duplicates errcheck.
+        - G115 # Integer conversions, mostly false positives.
+        - G301 # Directory permissions.
+        - G302 # File permissions.
+        - G306 # File permissions on write.
+        - G703 # Path traversal, overlaps G304 (excluded by a preset) with more false positives.
+
     govet:
       enable-all: true
       disable:
         - fieldalignment
-        - shadow
-    misspell:
-      locale: US
-    nestif:
-      min-complexity: 4
+        - shadow # Fires on idiomatic `if err := f(); err != nil`.
+
+    modernize:
+      disable:
+        - omitzero # Changes JSON output for some types.
+
     nolintlint:
-      require-explanation: true
-      require-specific: true
+      require-specific: true # A bare //nolint hides every linter.
+
     revive:
-      confidence: 0
       enable-default-rules: true
       rules:
+        # Fires on interface methods that ignore some parameters.
         - name: unused-parameter
           disabled: true
+        # Rules not covered by other enabled linters.
+        - name: bool-literal-in-expr
+        - name: datarace
+        - name: deep-exit
+        - name: defer
+        - name: forbidden-call-in-wg-go
+        - name: identical-ifelseif-branches
+        - name: identical-ifelseif-conditions
+        - name: identical-switch-branches
+        - name: modifies-value-receiver
+        - name: redundant-import-alias
+        - name: redundant-test-main-exit
+        - name: time-date
+        - name: useless-break
+
+    staticcheck:
+      checks:
+        - all
+        # Off in staticcheck defaults: doc comment and naming conventions.
+        - -ST1000
+        - -ST1003
+        - -ST1016
+        - -ST1020
+        - -ST1021
+        - -ST1022
+        # Both forms are equally clear.
+        - -QF1001 # De Morgan's law.
+        - -QF1008 # Embedded fields in selectors.
+
+    usetesting:
+      os-temp-dir: true
+
   exclusions:
-    generated: lax
     presets:
       - comments
       - common-false-positives
@@ -127,19 +179,12 @@ linters:
     rules:
       - path: _test\.go
         linters:
-          - dupl
-          - funlen
-          - goconst
-          - gochecknoglobals
-          - gocognit
+          - bodyclose
+          - gosec
+          - noctx
+          - errcheck
+
 formatters:
   enable:
-    - gofumpt
     - goimports
-  settings:
-    gofumpt:
-      extra:
-        group-params: true
-    goimports:
-      local-prefixes:
-        - github.com/albertsko/go-kickstart
+    - gofumpt
