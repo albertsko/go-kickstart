@@ -1,12 +1,5 @@
 # Universal golangci-lint config. Tested on golangci-lint v2.15.0.
-# Validate edits with `golangci-lint config verify`, because `run` ignores misspelled keys.
-#
-# Policy:
-# - Strict on bugs, security, and error handling, but moderate on style.
-# - No project-specific values (module path, Go version, OS paths).
-# - Explicit linter list, so upgrades never enable new linters.
-# - Every linter in v2.15.0 is either enabled or listed under "Disabled linters".
-# - Review `--fix` output: the fatcontext fix can leave an unused variable.
+# Strict on bugs, security, and error handling, but moderate on style.
 
 version: "2"
 
@@ -79,13 +72,13 @@ linters:
   #   exhaustruct, gomodguard, wsl
   # Need project-specific rules:
   #   depguard, goheader, gomodguard_v2, importas
-  # Duplicate an enabled linter (replacement in parentheses):
+  # Overlap or alternative metrics, not exact replacements (selected tool in parentheses):
   #   cyclop, gocyclo, maintidx, nestif, funlen (gocognit), intrange (modernize),
   #   predeclared (revive), loggercheck (govet, sloglint), wastedassign (ineffassign, staticcheck),
   #   copyloopvar (modernize), forcetypeassert (errcheck), errchkjson (staticcheck, errcheck)
-  # Poorly maintained:
-  #   asasalint (no commits since 2023-05), tparallel (no commits since 2024-06, crash reports)
-  # Noisy, or against common Go idioms:
+  # Previously omitted for maintenance concerns. Recheck current evidence before enabling:
+  #   asasalint, tparallel
+  # Omitted to limit structural restrictions and project-dependent warnings:
   #   contextcheck, dupl, err113, exhaustruct_v5, gochecknoglobals, gochecknoinits, godox,
   #   goconst, mnd, musttag, nlreturn, noinlineerr, nonamedreturns, paralleltest, prealloc,
   #   testpackage, varnamelen, wrapcheck
@@ -97,13 +90,10 @@ linters:
 
   settings:
     dupword:
-      comments-only: true # Repeated words in strings are often data.
+      comments-only: true
 
     errcheck:
-      check-type-assertions: true # Unchecked type assertions panic.
-
-    exhaustive:
-      default-signifies-exhaustive: true
+      check-type-assertions: true
 
     gocritic:
       enabled-tags:
@@ -113,76 +103,27 @@ linters:
 
     gosec:
       excludes:
-        - G104 # Duplicates errcheck.
-        - G115 # Integer conversions, mostly false positives.
-        - G301 # Directory permissions.
-        - G302 # File permissions.
-        - G306 # File permissions on write.
-        - G703 # Path traversal, overlaps G304 (excluded by a preset) with more false positives.
-
-    govet:
-      enable-all: true
-      disable:
-        - fieldalignment
-        - shadow # Fires on idiomatic `if err := f(); err != nil`.
+        - G104 # Use errcheck as the primary unchecked-error checker.
 
     modernize:
       disable:
-        - omitzero # Changes JSON output for some types.
+        - omitzero # golangci-lint v2.15.0 conflicts on alternative JSON-tag fixes.
 
     nolintlint:
-      require-specific: true # A bare //nolint hides every linter.
+      require-specific: true
+      require-explanation: true
 
     revive:
       enable-default-rules: true
       rules:
-        # Fires on interface methods that ignore some parameters.
-        - name: unused-parameter
-          disabled: true
-        # Rules not covered by other enabled linters.
-        - name: bool-literal-in-expr
         - name: datarace
-        - name: deep-exit
         - name: defer
         - name: forbidden-call-in-wg-go
-        - name: identical-ifelseif-branches
-        - name: identical-ifelseif-conditions
-        - name: identical-switch-branches
-        - name: modifies-value-receiver
-        - name: redundant-import-alias
-        - name: redundant-test-main-exit
-        - name: time-date
-        - name: useless-break
-
-    staticcheck:
-      checks:
-        - all
-        # Off in staticcheck defaults: doc comment and naming conventions.
-        - -ST1000
-        - -ST1003
-        - -ST1016
-        - -ST1020
-        - -ST1021
-        - -ST1022
-        # Both forms are equally clear.
-        - -QF1001 # De Morgan's law.
-        - -QF1008 # Embedded fields in selectors.
-
-    usetesting:
-      os-temp-dir: true
 
   exclusions:
     presets:
       - comments
       - common-false-positives
-      - std-error-handling
-    rules:
-      - path: _test\.go
-        linters:
-          - bodyclose
-          - gosec
-          - noctx
-          - errcheck
 
 formatters:
   enable:

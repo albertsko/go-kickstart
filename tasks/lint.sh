@@ -5,6 +5,7 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 # shellcheck source=tasks/_lib.sh
 source tasks/_lib.sh
 
+golangci-lint config verify
 golangci-lint run
 go mod tidy -diff
 go fix -diff ./...
