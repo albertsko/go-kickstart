@@ -18,11 +18,11 @@ func TestRun(t *testing.T) {
 		wantStderr string
 		wantErr    error
 	}{
-		{name: "greeting", args: nil, wantStdout: "Less setup, more Go! 🚀\n"},
-		{name: "version", args: []string{"-version"}, wantStdout: "dev\n"},
-		{name: "help", args: []string{"-h"}, wantStderr: "Usage of go-kickstart"},
-		{name: "unknown flag", args: []string{"-nope"}, wantStderr: "Usage of go-kickstart", wantErr: errUsage},
-		{name: "extra argument", args: []string{"extra"}, wantStderr: "unexpected argument: extra", wantErr: errUsage},
+		{name: "greeting", args: nil, wantStdout: "Less setup, more Go! 🚀\n", wantStderr: "", wantErr: nil},
+		{name: "version", args: []string{"-version"}, wantStdout: "dev\n", wantStderr: "", wantErr: nil},
+		{name: "help", args: []string{"-h"}, wantStdout: "", wantStderr: "Usage of go-kickstart", wantErr: nil},
+		{name: "unknown flag", args: []string{"-nope"}, wantStdout: "", wantStderr: "Usage of go-kickstart", wantErr: errUsage},
+		{name: "extra argument", args: []string{"extra"}, wantStdout: "", wantStderr: "unexpected argument: extra", wantErr: errUsage},
 	}
 
 	for _, tt := range tests {
@@ -61,9 +61,9 @@ func TestExitCode(t *testing.T) {
 		want       int
 		wantStderr string
 	}{
-		{name: "success", err: nil, want: 0},
-		{name: "usage", err: errUsage, want: 2},
-		{name: "wrapped usage", err: errors.Join(errUsage, errors.New("bad flag")), want: 2},
+		{name: "success", err: nil, want: 0, wantStderr: ""},
+		{name: "usage", err: errUsage, want: 2, wantStderr: ""},
+		{name: "wrapped usage", err: errors.Join(errUsage, errors.New("bad flag")), want: 2, wantStderr: ""},
 		{name: "failure", err: errors.New("boom"), want: 1, wantStderr: "go-kickstart: boom\n"},
 	}
 
@@ -87,8 +87,21 @@ func TestExitCode(t *testing.T) {
 func TestResolveVersion(t *testing.T) {
 	t.Parallel()
 
+	const devVersion = "dev"
+
 	withVersion := func(v string) *debug.BuildInfo {
-		return &debug.BuildInfo{Main: debug.Module{Version: v}}
+		return &debug.BuildInfo{
+			GoVersion: "",
+			Path:      "",
+			Main: debug.Module{
+				Path:    "",
+				Version: v,
+				Sum:     "",
+				Replace: nil,
+			},
+			Deps:     nil,
+			Settings: nil,
+		}
 	}
 
 	tests := []struct {
@@ -98,10 +111,10 @@ func TestResolveVersion(t *testing.T) {
 		want   string
 	}{
 		{name: "goreleaser version wins", linked: "1.2.3", info: withVersion("v9.9.9"), want: "1.2.3"},
-		{name: "go install version", linked: "dev", info: withVersion("v1.4.0"), want: "v1.4.0"},
-		{name: "local build", linked: "dev", info: withVersion("(devel)"), want: "dev"},
-		{name: "empty module version", linked: "dev", info: withVersion(""), want: "dev"},
-		{name: "no build info", linked: "dev", info: nil, want: "dev"},
+		{name: "go install version", linked: devVersion, info: withVersion("v1.4.0"), want: "v1.4.0"},
+		{name: "local build", linked: devVersion, info: withVersion("(devel)"), want: devVersion},
+		{name: "empty module version", linked: devVersion, info: withVersion(""), want: devVersion},
+		{name: "no build info", linked: devVersion, info: nil, want: devVersion},
 	}
 
 	for _, tt := range tests {

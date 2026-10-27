@@ -42,7 +42,8 @@ func run(args []string, stdout, stderr io.Writer) error {
 	}
 
 	if fs.NArg() > 0 {
-		fmt.Fprintf(stderr, "unexpected argument: %s\n", fs.Arg(0))
+		// A failed diagnostic write does not change the usage exit status.
+		_, _ = fmt.Fprintf(stderr, "unexpected argument: %s\n", fs.Arg(0))
 		fs.Usage()
 
 		return errUsage
@@ -50,13 +51,19 @@ func run(args []string, stdout, stderr io.Writer) error {
 
 	if *showVersion {
 		_, err = fmt.Fprintln(stdout, buildVersion())
+		if err != nil {
+			return fmt.Errorf("write version: %w", err)
+		}
 
-		return err
+		return nil
 	}
 
 	_, err = fmt.Fprintln(stdout, "Less setup, more Go! 🚀")
+	if err != nil {
+		return fmt.Errorf("write greeting: %w", err)
+	}
 
-	return err
+	return nil
 }
 
 // exitCode also prints err, unless run has already reported it.
@@ -69,7 +76,8 @@ func exitCode(err error, stderr io.Writer) int {
 		return exitUsage
 	}
 
-	fmt.Fprintf(stderr, "go-kickstart: %v\n", err)
+	// A failed diagnostic write does not change the failure exit status.
+	_, _ = fmt.Fprintf(stderr, "go-kickstart: %v\n", err)
 
 	return exitFailure
 }
