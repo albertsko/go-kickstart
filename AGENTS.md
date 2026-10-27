@@ -19,6 +19,7 @@
 
 - Install with `mise run brew` or `mise install`. Installed mise tools win over Homebrew.
 - Add a tool to `Brewfile` and `[tools]` in `mise.toml`.
+- When adding a Go module dependency, run `golangci-lint linters` and check for a linter for that dependency.
 
 ### Commits
 

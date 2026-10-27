@@ -1,5 +1,5 @@
-# Universal golangci-lint config. Tested on golangci-lint v2.15.0.
-# Strict on bugs, security, and error handling, but moderate on style.
+# Opinionated golangci-lint config. Tested on golangci-lint v2.15.0.
+# Strict on bugs, security, error handling, and idiomatic Go style.
 
 version: "2"
 
@@ -18,6 +18,7 @@ linters:
     - errcheck
     - errorlint
     - exhaustive
+    - exhaustruct_v5
     - fatcontext
     - gocheckcompilerdirectives
     - gochecksumtype
@@ -41,59 +42,50 @@ linters:
     - gosec
 
     # Tests.
+    - paralleltest
+    - testableexamples
     - thelper
     - usetesting
 
     # Maintainability and idioms.
     - asciicheck
     - canonicalheader
+    - dupl
     - dupword
     - errname
     - gocognit
+    - goconst
     - godoclint
+    - godot
+    - gomoddirectives
     - goprintffuncname
+    - iface
     - mirror
     - misspell
     - modernize
     - nakedret
     - nilnil
     - nolintlint
+    - prealloc
     - revive
     - unconvert
     - unparam
     - usestdlibvars
-
-  # Disabled linters:
-  #
-  # Third-party libraries only:
-  #   arangolint, clickhouselint, exptostd, ginkgolinter, promlinter, protogetter, spancheck,
-  #   testifylint, zerologlint
-  # Deprecated:
-  #   exhaustruct, gomodguard, wsl
-  # Need project-specific rules:
-  #   depguard, goheader, gomodguard_v2, importas
-  # Overlap or alternative metrics, not exact replacements (selected tool in parentheses):
-  #   cyclop, gocyclo, maintidx, nestif, funlen (gocognit), intrange (modernize),
-  #   predeclared (revive), loggercheck (govet, sloglint), wastedassign (ineffassign, staticcheck),
-  #   copyloopvar (modernize), forcetypeassert (errcheck), errchkjson (staticcheck, errcheck)
-  # Previously omitted for maintenance concerns. Recheck current evidence before enabling:
-  #   asasalint, tparallel
-  # Omitted to limit structural restrictions and project-dependent warnings:
-  #   contextcheck, dupl, err113, exhaustruct_v5, gochecknoglobals, gochecknoinits, godox,
-  #   goconst, mnd, musttag, nlreturn, noinlineerr, nonamedreturns, paralleltest, prealloc,
-  #   testpackage, varnamelen, wrapcheck
-  # Style or policy choices that are not universal:
-  #   containedctx, decorder, dogsled, embeddedstructfieldcheck, forbidigo, funcorder, godot,
-  #   gomoddirectives, gosmopolitan, grouper, iface, inamedparam, interfacebloat, iotamixing,
-  #   ireturn, lll, perfsprint, tagalign, tagliatelle, testableexamples, unqueryvet, whitespace,
-  #   wsl_v5
+    - wrapcheck
+    - wsl_v5
 
   settings:
+    dupl:
+      threshold: 200
+
     dupword:
       comments-only: true
 
     errcheck:
       check-type-assertions: true
+
+    exhaustruct_v5:
+      allow-empty: true
 
     gocritic:
       enabled-tags:
@@ -124,6 +116,14 @@ linters:
     presets:
       - comments
       - common-false-positives
+    rules:
+      - path: _test\.go$
+        linters:
+          - dupl
+          - errcheck
+          - exhaustruct_v5
+          - gocognit
+          - gosec
 
 formatters:
   enable:

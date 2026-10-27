@@ -51,13 +51,19 @@ func run(args []string, stdout, stderr io.Writer) error {
 
 	if *showVersion {
 		_, err = fmt.Fprintln(stdout, buildVersion())
+		if err != nil {
+			return fmt.Errorf("write version: %w", err)
+		}
 
-		return err
+		return nil
 	}
 
 	_, err = fmt.Fprintln(stdout, "Less setup, more Go! 🚀")
+	if err != nil {
+		return fmt.Errorf("write greeting: %w", err)
+	}
 
-	return err
+	return nil
 }
 
 // exitCode also prints err, unless run has already reported it.

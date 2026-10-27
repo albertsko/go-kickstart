@@ -21,7 +21,7 @@ mise run ci                        # run every check
 
 ### Contents
 
-- 🧹 **Linters**, best practices from day one.
+- 🧹 **Linters**, clean from day one.
 - ✨ **Formatters** for Go, shell, and Markdown.
 - 🏃 **Tasks** with `mise run`.
 - 🧑‍🍳 **Tools** from `mise` or `brew`.
