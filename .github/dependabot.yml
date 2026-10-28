@@ -6,23 +6,29 @@ updates:
       prefix: build
       include: scope
     schedule:
-      interval: weekly
+      interval: daily
     cooldown:
       default-days: 7
     groups:
       actions-minor-and-patch:
         patterns: ["*"]
         update-types: [minor, patch]
+      actions-security:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: gomod
     directory: /
     commit-message:
       prefix: build
       include: scope
     schedule:
-      interval: weekly
+      interval: daily
     cooldown:
       default-days: 7
     groups:
       gomod-minor-and-patch:
         patterns: ["*"]
         update-types: [minor, patch]
+      gomod-security:
+        applies-to: security-updates
+        patterns: ["*"]

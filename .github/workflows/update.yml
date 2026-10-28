@@ -2,7 +2,7 @@ name: Update
 on:
   workflow_dispatch:
   schedule:
-    - cron: "23 6 * * 1"
+    - cron: "23 6 * * *"
 permissions: {}
 concurrency:
   group: update

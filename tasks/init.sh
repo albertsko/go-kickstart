@@ -42,7 +42,8 @@ printf '<div align="center"><h3>%s</h3></div>\n' "$new_name" >README.md
 tasks/fmt.sh
 
 printf 'Renamed %s to %s. Review with: git diff\n' "$old_module" "$new_module" >&2
-printf 'For weekly tool updates, enable "Allow GitHub Actions to create and approve pull requests" in Settings > Actions > General.\n' >&2
+printf 'For daily tool updates, enable "Allow GitHub Actions to create and approve pull requests" in Settings > Actions > General.\n' >&2
+printf 'For fast security updates, enable "Dependency graph", "Dependabot alerts", and "Dependabot security updates" in Settings > Advanced Security.\n' >&2
 
 IFS=/ read -r -a parts <<<"$new_module"
 if ((${#parts[@]} < 3)); then
