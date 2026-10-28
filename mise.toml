@@ -51,10 +51,6 @@ run = ["rm -rf bin dist", "go clean -testcache"]
 description = "Rename the template module once"
 file = "tasks/init.sh"
 
-[tasks.brew]
-description = "Install the tools with Homebrew"
-file = "tasks/brew.sh"
-
 [tasks.deps]
 description = "Check that the tools are installed"
 file = "tasks/deps.sh"

@@ -11,14 +11,13 @@
 | `mise run ci`              | Run all checks. A change is done when this passes. |
 | `mise run release-check`   | Validate `.goreleaser.yaml`.                       |
 | `mise run clean`           | Remove build output and the test cache.            |
-| `mise run brew`            | Install the tools with Homebrew.                   |
 | `mise run deps`            | Check that the tools are installed.                |
 | `mise run upgrade`         | Upgrade all mise tools, including Go.              |
 
 ### Tools
 
-- Install with `mise run brew` or `mise install`. Installed mise tools win over Homebrew.
-- Add a tool to `Brewfile` and `[tools]` in `mise.toml`.
+- Install with `mise install`.
+- Add a tool to `[tools]` in `mise.toml`.
 - When adding a Go module dependency, run `golangci-lint linters` and check for a linter for that dependency.
 
 ### Commits
