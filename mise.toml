@@ -27,6 +27,10 @@ file = "tasks/test.sh"
 description = "Build bin/go-kickstart"
 file = "tasks/build.sh"
 
+[tasks.start]
+description = "Build and run bin/go-kickstart"
+file = "tasks/start.sh"
+
 [tasks.release-check]
 description = "Validate .goreleaser.yaml"
 run = "goreleaser check"

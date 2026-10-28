@@ -8,6 +8,7 @@
 | `mise run test`            | Run Go tests. CI also shuffles the test order.     |
 | `mise run test -run TestX` | Pass arguments to `go test`.                       |
 | `mise run build`           | Build `bin/go-kickstart`.                          |
+| `mise run start`           | Build and run `bin/go-kickstart`.                  |
 | `mise run ci`              | Run all checks. A change is done when this passes. |
 | `mise run release-check`   | Validate `.goreleaser.yaml`.                       |
 | `mise run clean`           | Remove build output and the test cache.            |
