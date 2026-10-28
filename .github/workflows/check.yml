@@ -14,11 +14,29 @@ jobs:
     name: check
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      SAVE_CACHE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        id: mise
         with:
           minimum_release_age: 7d
+          cache_save: ${{ env.SAVE_CACHE }}
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: go-cache
+        with:
+          path: &go-cache-paths |
+            ~/.cache/go-build
+            ~/.cache/golangci-lint
+            ~/go/pkg/mod
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ steps.mise.outputs.go }}-${{ github.sha }}
+          restore-keys: go-${{ runner.os }}-${{ runner.arch }}-${{ steps.mise.outputs.go }}-
       - run: mise run ci
+      - if: env.SAVE_CACHE == 'true' && steps.go-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: *go-cache-paths
+          key: ${{ steps.go-cache.outputs.cache-primary-key }}

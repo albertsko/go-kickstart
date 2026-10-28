@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+
+if [[ -n "${CI:-}" ]]; then
+	exec go test -race -shuffle=on ./... "$@"
+fi
+
+GORACE="atexit_sleep_ms=0${GORACE:+ $GORACE}" exec go test -race ./... "$@"

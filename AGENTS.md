@@ -5,7 +5,7 @@
 | `mise run fmt`             | Format Go, shell, and markdown.                    |
 | `mise run fmt --check`     | Check formatting only.                             |
 | `mise run lint`            | Lint Go, shell, and workflows.                     |
-| `mise run test`            | Run Go tests.                                      |
+| `mise run test`            | Run Go tests. CI also shuffles the test order.     |
 | `mise run test -run TestX` | Pass arguments to `go test`.                       |
 | `mise run build`           | Build `bin/go-kickstart`.                          |
 | `mise run ci`              | Run all checks. A change is done when this passes. |

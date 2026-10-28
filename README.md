@@ -25,7 +25,7 @@ mise run ci                        # run every check
 - ✨ **Formatters** for Go, shell, and Markdown.
 - 🏃 **Tasks** with `mise run`.
 - 🧑‍🍳 **Tools** from `mise`.
-- ✅ **CI** on GitHub Actions, with cached mise tools.
+- ✅ **CI** on GitHub Actions, with cached tools and Go builds.
 - 📦 **Releases** for Linux, macOS, and Windows.
 - 🤖 **Updates** for mise tools, Go modules, and GitHub Actions.
 
