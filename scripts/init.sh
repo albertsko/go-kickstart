@@ -5,7 +5,7 @@ if [[ -z "${GO_KICKSTART_INIT_MISE:-}" ]]; then
 	GO_KICKSTART_INIT_MISE=1 exec mise exec -- "$0" "$@"
 fi
 
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 # shellcheck source=scripts/_lib.sh
 source scripts/_lib.sh
 
@@ -14,7 +14,7 @@ readonly MARK=$'\2'
 
 new_module="${1:-}"
 
-[[ -n "$new_module" ]] || die "usage: ./init.sh <module path>, for example github.com/you/app"
+[[ -n "$new_module" ]] || die "usage: ./scripts/init.sh <module path>, for example github.com/you/app"
 old_module="$(go list -m)"
 [[ "$old_module" == "$TEMPLATE_MODULE" ]] || die "init renames the template once, and this module is already $old_module"
 go mod edit -module "$new_module" -print >/dev/null || die "invalid module path: $new_module"
@@ -32,7 +32,7 @@ rename_in() {
 	printf '%s' "$text" >"$1"
 }
 
-git rm -q -- init.sh
+git rm -q -- scripts/init.sh
 
 while IFS= read -r -d '' file; do
 	rename_in "$file"

@@ -12,11 +12,11 @@
 [Use this template](https://github.com/albertsko/go-kickstart/generate), clone it, and run:
 
 ```
-curl https://mise.run | sh    # install mise
-mise trust                    # allow the project configuration and tasks
-mise install                  # install the tools
-./init.sh github.com/you/app  # rename the project
-mise run ci                   # run every check
+curl https://mise.run | sh            # install mise
+mise trust                            # allow the project configuration and tasks
+mise install                          # install the tools
+./scripts/init.sh github.com/you/app  # rename the project
+mise run ci                           # run every check
 ```
 
 ### Contents
