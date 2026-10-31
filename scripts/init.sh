@@ -6,7 +6,7 @@ if [[ -z "${GO_KICKSTART_INIT_MISE:-}" ]]; then
 fi
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-# shellcheck source=scripts/_lib.sh
+# shellcheck disable=SC1091
 source scripts/_lib.sh
 
 readonly TEMPLATE_MODULE="github.com/albertsko/go-kickstart"
