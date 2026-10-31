@@ -8,4 +8,4 @@ if [[ -n "${CI:-}" ]]; then
 	exec go test -race -shuffle=on ./... "$@"
 fi
 
-GORACE="atexit_sleep_ms=0${GORACE:+ $GORACE}" exec go test -race ./... "$@"
+exec go test -race ./... "$@"
