@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-# shellcheck source=tasks/_lib.sh
-source tasks/_lib.sh
+if [[ -z "${GO_KICKSTART_INIT_MISE:-}" ]]; then
+	GO_KICKSTART_INIT_MISE=1 exec mise exec -- "$0" "$@"
+fi
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+# shellcheck source=scripts/_lib.sh
+source scripts/_lib.sh
 
 readonly TEMPLATE_MODULE="github.com/albertsko/go-kickstart"
 readonly MARK=$'\2'
 
 new_module="${1:-}"
 
-[[ -n "$new_module" ]] || die "usage: mise run init <module path>, for example github.com/you/app"
+[[ -n "$new_module" ]] || die "usage: ./init.sh <module path>, for example github.com/you/app"
 old_module="$(go list -m)"
 [[ "$old_module" == "$TEMPLATE_MODULE" ]] || die "init renames the template once, and this module is already $old_module"
 go mod edit -module "$new_module" -print >/dev/null || die "invalid module path: $new_module"
@@ -28,9 +32,7 @@ rename_in() {
 	printf '%s' "$text" >"$1"
 }
 
-awk '/^\[tasks\.init\]$/ { skip = 1 } skip && /^$/ { skip = 0; next } !skip' mise.toml >mise.toml.tmp
-mv -- mise.toml.tmp mise.toml
-git rm -q -- tasks/init.sh
+git rm -q -- init.sh
 
 while IFS= read -r -d '' file; do
 	rename_in "$file"
@@ -39,7 +41,7 @@ done < <(git grep -lIz -F -e "$old_module" -e "$old_name")
 printf '<div align="center"><h3>%s</h3></div>\n' "$new_name" >README.md
 [[ "$new_name" == "$old_name" ]] || git mv -- "cmd/$old_name" "cmd/$new_name"
 
-tasks/fmt.sh
+tasks/fmt
 
 printf 'Renamed %s to %s. Review with: git diff\n' "$old_module" "$new_module" >&2
 printf 'For daily tool updates, enable "Allow GitHub Actions to create and approve pull requests" in Settings > Actions > General.\n' >&2

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#MISE description="Format Go, shell, and markdown"
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+# shellcheck source=scripts/_lib.sh
+source scripts/_lib.sh
+
+[[ $# -eq 0 || "$1" == "--check" ]] || die "usage: mise run fmt [--check]"
+
+steps=(
+	--step go-format
+	--step shell-format
+	--step markdown-format
+)
+
+if [[ "${1:-}" == "--check" ]]; then
+	exec hk check --all "${steps[@]}"
+fi
+
+exec hk fix --all --no-stage "${steps[@]}"

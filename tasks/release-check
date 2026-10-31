@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
+#MISE description="Validate .goreleaser.yaml"
 set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 
-mise install
-exec mise upgrade --bump --local --no-prune
+exec goreleaser check

@@ -1,6 +1,6 @@
 <div align="center">
-    <h3>Kickstart your next Go project! 🚀</h3>
-    <h5>A Go project template with linting, tests, CI, and cross-platform releases built in.</h5>
+    <h3>Kickstart a Go project! 🚀</h3>
+    <h5>Go project template with linting, tests, CI, and cross-platform releases built in.</h5>
 
 [![Check](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml/badge.svg)](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml)
 [![Go 1.27](https://img.shields.io/badge/go-1.27-00ADD8?logo=go)](go.mod)
@@ -12,11 +12,11 @@
 [Use this template](https://github.com/albertsko/go-kickstart/generate), clone it, and run:
 
 ```
-curl https://mise.run | sh         # install mise
-mise trust                         # allow the tasks in mise.toml
-mise install                       # install the tools
-mise run init github.com/you/app   # rename the project
-mise run ci                        # run every check
+curl https://mise.run | sh    # install mise
+mise trust                    # allow the project configuration and tasks
+mise install                  # install the tools
+./init.sh github.com/you/app  # rename the project
+mise run ci                   # run every check
 ```
 
 ### Contents

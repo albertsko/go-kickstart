@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+#MISE description="Check that the tools are installed"
 set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-# shellcheck source=tasks/_lib.sh
-source tasks/_lib.sh
+# shellcheck source=scripts/_lib.sh
+source scripts/_lib.sh
 
 mise install --dry-run-code >/dev/null || die "Some tools in mise.toml are missing. Run: mise install"
 printf 'The tools in mise.toml are installed.\n'

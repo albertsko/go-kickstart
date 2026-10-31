@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#MISE description="Upgrade all mise tools"
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+
+mise install
+mise upgrade --bump --local --no-prune
+
+hk_version="$(mise config get --file mise.toml 'tools."github:jdx/hk"')"
+tmp="$(mktemp ./hk.pkl.XXXXXX)"
+trap 'rm -f "$tmp"' EXIT
+awk -v version="$hk_version" '
+/^amends "package:\/\/github.com\/jdx\/hk\/releases\/download\// { print "amends \"package://github.com/jdx/hk/releases/download/v" version "/hk@" version "#/Config.pkl\""; next }
+/^import "package:\/\/github.com\/jdx\/hk\/releases\/download\/.*\/Builtins\.pkl"/ { print "import \"package://github.com/jdx/hk/releases/download/v" version "/hk@" version "#/Builtins.pkl\""; next }
+/^min_hk_version = / { print "min_hk_version = \"" version "\""; next }
+{ print }
+' hk.pkl >"$tmp"
+chmod 644 "$tmp"
+mv -- "$tmp" hk.pkl
