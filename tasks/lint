@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Lint Go, shell, and workflows"
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+
+exec hk check --all \
+	--step go-project \
+	--step shellcheck \
+	--step jactionlint

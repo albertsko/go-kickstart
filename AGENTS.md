@@ -29,7 +29,7 @@
 
 ### CI
 
-- Put task scripts in `tasks/`, linked with `file =` in `mise.toml`.
+- Put executable task scripts in `tasks/` with their descriptions in `#MISE` headers.
 - CI installs the tools configured in `mise.toml`.
 
 ### Releases
@@ -40,5 +40,5 @@
 ### This file
 
 - `CLAUDE.md` is a symlink to `AGENTS.md`.
-- Update the Commands table when `mise.toml` tasks change.
+- Update the Commands table when tasks change.
 - Write each list item on one line.

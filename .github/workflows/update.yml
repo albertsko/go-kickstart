@@ -30,7 +30,9 @@ jobs:
         with:
           branch: automation/update-tools
           delete-branch: true
-          add-paths: mise.toml
+          add-paths: |
+            hk.pkl
+            mise.toml
           commit-message: "build(tools): update mise tools"
           title: "build(tools): update mise tools"
           body: Updates mise tools after a seven-day release delay. Verified with `mise run ci`.

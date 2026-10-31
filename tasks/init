@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#MISE description="Rename the template module once"
 set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
@@ -28,9 +29,7 @@ rename_in() {
 	printf '%s' "$text" >"$1"
 }
 
-awk '/^\[tasks\.init\]$/ { skip = 1 } skip && /^$/ { skip = 0; next } !skip' mise.toml >mise.toml.tmp
-mv -- mise.toml.tmp mise.toml
-git rm -q -- tasks/init.sh
+git rm -q -- tasks/init
 
 while IFS= read -r -d '' file; do
 	rename_in "$file"
@@ -39,7 +38,7 @@ done < <(git grep -lIz -F -e "$old_module" -e "$old_name")
 printf '<div align="center"><h3>%s</h3></div>\n' "$new_name" >README.md
 [[ "$new_name" == "$old_name" ]] || git mv -- "cmd/$old_name" "cmd/$new_name"
 
-tasks/fmt.sh
+tasks/fmt
 
 printf 'Renamed %s to %s. Review with: git diff\n' "$old_module" "$new_module" >&2
 printf 'For daily tool updates, enable "Allow GitHub Actions to create and approve pull requests" in Settings > Actions > General.\n' >&2

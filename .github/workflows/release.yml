@@ -27,6 +27,6 @@ jobs:
           minimum_release_age: 7d
           cache: false
           install_args: go github:goreleaser/goreleaser
-      - run: tasks/release.sh
+      - run: scripts/release.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

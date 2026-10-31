@@ -1,56 +1,19 @@
+min_version = "2026.10.14"
+
 [settings]
 auto_install = false
 minimum_release_age = "7d"
 
+[task_config]
+includes = ["tasks"]
+excludes = ["tasks/_lib.sh"]
+
 [tools]
 go = "latest"
+hk = "2.8.1"
 "github:golangci/golangci-lint" = "2.15.0"
 "github:goreleaser/goreleaser" = "2.19.0"
 "github:jdx/jactionlint" = "2.3.0"
 "github:koalaman/shellcheck" = "0.11.0"
 "github:mvdan/sh" = { version = "3.14.1", rename_exe = "shfmt" }
 "github:oxc-project/oxc" = { version = "0.74.0", version_prefix = "oxfmt_v", bin = "oxfmt" }
-
-[tasks.fmt]
-description = "Format Go, shell, and markdown"
-file = "tasks/fmt.sh"
-
-[tasks.lint]
-description = "Lint Go, shell, and workflows"
-file = "tasks/lint.sh"
-
-[tasks.test]
-description = "Run Go tests"
-file = "tasks/test.sh"
-
-[tasks.build]
-description = "Build bin/go-kickstart"
-file = "tasks/build.sh"
-
-[tasks.start]
-description = "Build and run bin/go-kickstart"
-file = "tasks/start.sh"
-
-[tasks.release-check]
-description = "Validate .goreleaser.yaml"
-run = "goreleaser check"
-
-[tasks.ci]
-description = "Run all checks"
-run = [{ task = "fmt", args = ["--check"] }, { task = "lint" }, { task = "test" }, { task = "build" }, { task = "release-check" }]
-
-[tasks.clean]
-description = "Remove build output and the test cache"
-run = ["rm -rf bin dist", "go clean -testcache"]
-
-[tasks.init]
-description = "Rename the template module once"
-file = "tasks/init.sh"
-
-[tasks.deps]
-description = "Check that the tools are installed"
-file = "tasks/deps.sh"
-
-[tasks.upgrade]
-description = "Upgrade all mise tools"
-file = "tasks/upgrade.sh"
