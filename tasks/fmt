@@ -3,8 +3,8 @@
 set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-# shellcheck source=tasks/_lib
-source tasks/_lib
+# shellcheck source=scripts/_lib.sh
+source scripts/_lib.sh
 
 [[ $# -eq 0 || "$1" == "--check" ]] || die "usage: mise run fmt [--check]"
 

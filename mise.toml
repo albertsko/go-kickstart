@@ -6,7 +6,6 @@ minimum_release_age = "7d"
 
 [task_config]
 includes = ["tasks"]
-excludes = ["tasks/_lib"]
 
 [tools]
 go = "latest"
