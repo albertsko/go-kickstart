@@ -6,13 +6,13 @@ minimum_release_age = "7d"
 
 [task_config]
 includes = ["tasks"]
-excludes = ["tasks/_lib.sh"]
+excludes = ["tasks/_lib"]
 
 [tools]
 go = "latest"
-hk = "2.8.1"
 "github:golangci/golangci-lint" = "2.15.0"
 "github:goreleaser/goreleaser" = "2.19.0"
+"github:jdx/hk" = "2.8.1"
 "github:jdx/jactionlint" = "2.3.0"
 "github:koalaman/shellcheck" = "0.11.0"
 "github:mvdan/sh" = { version = "3.14.1", rename_exe = "shfmt" }

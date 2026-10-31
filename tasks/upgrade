@@ -5,9 +5,9 @@ set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 
 mise install
-mise upgrade --bump --no-global --no-prune
+mise upgrade --bump --local --no-prune
 
-hk_version="$(mise config get --file mise.toml tools.hk)"
+hk_version="$(mise config get --file mise.toml 'tools."github:jdx/hk"')"
 tmp="$(mktemp ./hk.pkl.XXXXXX)"
 trap 'rm -f "$tmp"' EXIT
 awk -v version="$hk_version" '

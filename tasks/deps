@@ -3,8 +3,8 @@
 set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-# shellcheck source=tasks/_lib.sh
-source tasks/_lib.sh
+# shellcheck source=tasks/_lib
+source tasks/_lib
 
 mise install --dry-run-code >/dev/null || die "Some tools in mise.toml are missing. Run: mise install"
 printf 'The tools in mise.toml are installed.\n'

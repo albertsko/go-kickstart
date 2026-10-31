@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
-#MISE description="Rename the template module once"
 set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-# shellcheck source=tasks/_lib.sh
-source tasks/_lib.sh
+# shellcheck source=tasks/_lib
+source tasks/_lib
 
 readonly TEMPLATE_MODULE="github.com/albertsko/go-kickstart"
 readonly MARK=$'\2'
 
 new_module="${1:-}"
 
-[[ -n "$new_module" ]] || die "usage: mise run init <module path>, for example github.com/you/app"
+[[ -n "$new_module" ]] || die "usage: mise run ./scripts/init-template.sh <module path>, for example github.com/you/app"
 old_module="$(go list -m)"
 [[ "$old_module" == "$TEMPLATE_MODULE" ]] || die "init renames the template once, and this module is already $old_module"
 go mod edit -module "$new_module" -print >/dev/null || die "invalid module path: $new_module"
@@ -29,7 +28,7 @@ rename_in() {
 	printf '%s' "$text" >"$1"
 }
 
-git rm -q -- tasks/init
+git rm -q -- scripts/init-template.sh
 
 while IFS= read -r -d '' file; do
 	rename_in "$file"

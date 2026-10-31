@@ -15,7 +15,7 @@
 curl https://mise.run | sh         # install mise
 mise trust                         # allow the project configuration and tasks
 mise install                       # install the tools
-mise run init github.com/you/app   # rename the project
+mise run ./scripts/init-template.sh github.com/you/app # rename the project
 mise run ci                        # run every check
 ```
 
