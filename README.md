@@ -3,7 +3,6 @@
     <h5>Go project template with linting, tests, CI, and cross-platform releases built in.</h5>
 
 [![Check](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml/badge.svg)](https://github.com/albertsko/go-kickstart/actions/workflows/check.yml)
-[![Go 1.27](https://img.shields.io/badge/go-1.27-00ADD8?logo=go)](go.mod)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 </div>
 
