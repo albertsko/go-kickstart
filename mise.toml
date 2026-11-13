@@ -12,7 +12,7 @@ go = "latest"
 "github:golangci/golangci-lint" = "2.15.0"
 "github:goreleaser/goreleaser" = "2.20.0"
 "github:jdx/hk" = "2.11.1"
-"github:jdx/jactionlint" = "2.4.0"
+"github:jdx/jactionlint" = "2.5.0"
 "github:koalaman/shellcheck" = "0.11.0"
 "github:mvdan/sh" = { version = "3.14.1", rename_exe = "shfmt" }
-"github:oxc-project/oxc" = { version = "0.76.0", version_prefix = "oxfmt_v", bin = "oxfmt" }
+"github:oxc-project/oxc" = { version = "0.77.0", version_prefix = "oxfmt_v", bin = "oxfmt" }
