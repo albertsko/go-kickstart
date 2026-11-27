@@ -10,9 +10,9 @@ includes = ["tasks"]
 [tools]
 go = "latest"
 "github:golangci/golangci-lint" = "2.15.0"
-"github:goreleaser/goreleaser" = "2.20.2"
-"github:jdx/hk" = "2.12.0"
+"github:goreleaser/goreleaser" = "2.20.3"
+"github:jdx/hk" = "2.13.0"
 "github:jdx/jactionlint" = "2.6.0"
 "github:koalaman/shellcheck" = "0.11.0"
 "github:mvdan/sh" = { version = "3.14.1", rename_exe = "shfmt" }
-"github:oxc-project/oxc" = { version = "0.78.0", version_prefix = "oxfmt_v", bin = "oxfmt" }
+"github:oxc-project/oxc" = { version = "0.79.0", version_prefix = "oxfmt_v", bin = "oxfmt" }
